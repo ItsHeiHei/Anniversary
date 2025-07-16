@@ -228,6 +228,20 @@
       song.style.zIndex = "";
     });
   });
+    
+    song.addEventListener("touchstart", e => {
+      const touch = e.touches[0];
+      startDrag(touch.clientX, touch.clientY);
+    }, { passive: false });
+
+    document.addEventListener("touchmove", e => {
+      if (!isDragging) return;
+      const touch = e.touches[0];
+      duringDrag(touch.clientX, touch.clientY);
+    }, { passive: false });
+
+    document.addEventListener("touchend", endDrag);
+  });
 </script>
 
    <script>
