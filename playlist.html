@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Playlist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: linear-gradient(to bottom right, #ffe4f0, #e0f4ff);
+      font-family: 'Nanum Pen Script', cursive;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    body.fade-in {
+      opacity: 1;
+    }
+
+    .song {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 20px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      padding: 16px 20px;
+      width: 240px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .song img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+    }
+
+    .song-info {
+      flex: 1;
+    }
+
+    .song-title {
+      font-size: 18px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .song-artist {
+      font-size: 16px;
+      color: #666;
+    }
+
+    .play-button {
+      background-color: hsl(214, 100%, 68%);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .play-button:hover {
+      background-color: #ff3d89;
+    }
+    
+
+    .back-button {
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      font-family: 'Nanum Pen Script', cursive;
+      background-color: #ff5ca2;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 14px 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .back-button:hover {
+      background-color: #ff3d89;
+    }
+  </style>
+</head>
+<body>
+    <div class="song" style="top: 100px; left:100px;">
+    <img src="Drowning.png" alt="cover" />
+    <div class="song-info">
+      <div class="song-title">Drowning</div>
+      <div class="song-artist">WOODZ</div>
+    </div>
+    <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=NbKH4iZqq1Y&si=6P9G38m5fb4285rc', '_blank')">▶</button>
+  </div>
+
+   <div class="song" style="top: 200px; left: 100px;">
+    <img src="Crooked.png" alt="cover" />
+    <div class="song-info">
+      <div class="song-title">삐딱하게</div>
+      <div class="song-artist">BIGBANG</div>
+    </div>
+    <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=ywoyAdPEyTg&si=_eP-K-gpiqZejQC2', '_blank')">▶</button>
+  </div>
+
+  <div class="song" style="top: 300px; left: 100px;">
+    <img src="Sober.png" alt="cover" />
+    <div class="song-info">
+      <div class="song-title">맨정신</div>
+      <div class="song-artist">BIGBANG</div>
+    </div>
+    <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=zT3VfvAjvtk&si=NUgWyjb_xiKloQ6X', '_blank')">▶</button>
+  </div>
+
+  <div class="song" style="top: 400px; left: 100px;">
+    <img src="BeautifulThings.png" alt="cover" />
+    <div class="song-info">
+      <div class="song-title">Beautiful Things</div>
+      <div class="song-artist">Benson Boone</div>
+    </div>
+    <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=eLhSxOAaWmg&si=nO0TDao2eyNMWT8P', '_blank')">▶</button>
+  </div>
+
+  <div class="song" style="top: 500px; left: 100px;">
+    <img src="LikeJennie.png" alt="cover" />
+    <div class="song-info">
+      <div class="song-title">like JENNIE</div>
+      <div class="song-artist">JENNIE</div>
+    </div>
+    <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=HMQlkbXjSTM&si=0BoW4OoANBstgEj5', '_blank')">▶</button>
+  </div>
+
+  <button class="back-button" onclick="window.location.href='index.html#icon'">뒤로가기</button>
+
+  <script>
+    // Fade in body
+    window.addEventListener("DOMContentLoaded", () => {
+      document.body.classList.add("fade-in");
+    });
+  </script>
+
+  <script>
+  const songs = document.querySelectorAll(".song");
+
+  songs.forEach(song => {
+    let isDragging = false;
+    let offsetX, offsetY;
+    let velocityX = 0;
+    let velocityY = 0;
+    let lastX, lastY;
+    let animationFrame;
+
+    const friction = 0.98; // Lower friction = longer drift
+    const bounceFactor = -0.6; // How strongly it bounces (negative reverses direction)
+
+    const move = () => {
+      const rect = song.getBoundingClientRect();
+      let nextX = song.offsetLeft + velocityX;
+      let nextY = song.offsetTop + velocityY;
+
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+
+      // Bounce on horizontal edges
+      if (nextX <= 0 || nextX >= maxX) {
+        velocityX *= bounceFactor;
+        nextX = Math.max(0, Math.min(nextX, maxX));
+      }
+
+      // Bounce on vertical edges
+      if (nextY <= 0 || nextY >= maxY) {
+        velocityY *= bounceFactor;
+        nextY = Math.max(0, Math.min(nextY, maxY));
+      }
+
+      song.style.left = nextX + "px";
+      song.style.top = nextY + "px";
+
+      velocityX *= friction;
+      velocityY *= friction;
+
+      if (Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) {
+        animationFrame = requestAnimationFrame(move);
+      }
+    };
+
+    song.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      cancelAnimationFrame(animationFrame);
+      offsetX = e.clientX - song.offsetLeft;
+      offsetY = e.clientY - song.offsetTop;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      song.style.zIndex = 1000;
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+
+      const currentX = e.clientX;
+      const currentY = e.clientY;
+
+      velocityX = currentX - lastX;
+      velocityY = currentY - lastY;
+
+      lastX = currentX;
+      lastY = currentY;
+
+      song.style.left = currentX - offsetX + "px";
+      song.style.top = currentY - offsetY + "px";
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (!isDragging) return;
+      isDragging = false;
+      animationFrame = requestAnimationFrame(move);
+      song.style.zIndex = "";
+    });
+  });
+</script>
+
+   <script>
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('gesturechange', e => e.preventDefault());
+    document.addEventListener('gestureend', e => e.preventDefault());
+  </script>
+
+</body>
+</html>
