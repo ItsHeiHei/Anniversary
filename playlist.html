@@ -23,7 +23,11 @@
 
     .song {
       position: absolute;
-      background: rgba(255, 255, 255, 0.6);
+      left: calc(50% - 120px);
+      transform: none;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 20px;
       box-shadow: 0 6px 16px rgba(0,0,0,0.1);
       padding: 16px 20px;
@@ -96,7 +100,7 @@
   </style>
 </head>
 <body>
-    <div class="song" style="top: 100px; left:100px;">
+    <div class="song" style="top: 100px;">
     <img src="Drowning.png" alt="cover" />
     <div class="song-info">
       <div class="song-title">Drowning</div>
@@ -105,7 +109,7 @@
     <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=NbKH4iZqq1Y&si=6P9G38m5fb4285rc', '_blank')">▶</button>
   </div>
 
-   <div class="song" style="top: 200px; left: 100px;">
+   <div class="song" style="top: 200px;">
     <img src="Crooked.png" alt="cover" />
     <div class="song-info">
       <div class="song-title">삐딱하게</div>
@@ -114,7 +118,7 @@
     <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=ywoyAdPEyTg&si=_eP-K-gpiqZejQC2', '_blank')">▶</button>
   </div>
 
-  <div class="song" style="top: 300px; left: 100px;">
+  <div class="song" style="top: 300px;">
     <img src="Sober.png" alt="cover" />
     <div class="song-info">
       <div class="song-title">맨정신</div>
@@ -123,7 +127,7 @@
     <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=zT3VfvAjvtk&si=NUgWyjb_xiKloQ6X', '_blank')">▶</button>
   </div>
 
-  <div class="song" style="top: 400px; left: 100px;">
+  <div class="song" style="top: 400px;">
     <img src="BeautifulThings.png" alt="cover" />
     <div class="song-info">
       <div class="song-title">Beautiful Things</div>
@@ -132,7 +136,7 @@
     <button class="play-button" onclick="window.open('https://music.youtube.com/watch?v=eLhSxOAaWmg&si=nO0TDao2eyNMWT8P', '_blank')">▶</button>
   </div>
 
-  <div class="song" style="top: 500px; left: 100px;">
+  <div class="song" style="top: 500px;">
     <img src="LikeJennie.png" alt="cover" />
     <div class="song-info">
       <div class="song-title">like JENNIE</div>
@@ -161,8 +165,8 @@
     let lastX, lastY;
     let animationFrame;
 
-    const friction = 0.98; // Lower friction = longer drift
-    const bounceFactor = -0.6; // How strongly it bounces (negative reverses direction)
+    const friction = 0.98;
+    const bounceFactor = -0.6;
 
     const move = () => {
       const rect = song.getBoundingClientRect();
@@ -172,13 +176,11 @@
       const maxX = window.innerWidth - rect.width;
       const maxY = window.innerHeight - rect.height;
 
-      // Bounce on horizontal edges
       if (nextX <= 0 || nextX >= maxX) {
         velocityX *= bounceFactor;
         nextX = Math.max(0, Math.min(nextX, maxX));
       }
 
-      // Bounce on vertical edges
       if (nextY <= 0 || nextY >= maxY) {
         velocityY *= bounceFactor;
         nextY = Math.max(0, Math.min(nextY, maxY));
@@ -195,40 +197,39 @@
       }
     };
 
-    song.addEventListener("mousedown", (e) => {
+    const startDrag = (x, y) => {
       isDragging = true;
       cancelAnimationFrame(animationFrame);
-      offsetX = e.clientX - song.offsetLeft;
-      offsetY = e.clientY - song.offsetTop;
-      lastX = e.clientX;
-      lastY = e.clientY;
+      offsetX = x - song.offsetLeft;
+      offsetY = y - song.offsetTop;
+      lastX = x;
+      lastY = y;
       song.style.zIndex = 1000;
-    });
+    };
 
-    document.addEventListener("mousemove", (e) => {
+    const duringDrag = (x, y) => {
       if (!isDragging) return;
+      velocityX = x - lastX;
+      velocityY = y - lastY;
+      lastX = x;
+      lastY = y;
+      song.style.left = x - offsetX + "px";
+      song.style.top = y - offsetY + "px";
+    };
 
-      const currentX = e.clientX;
-      const currentY = e.clientY;
-
-      velocityX = currentX - lastX;
-      velocityY = currentY - lastY;
-
-      lastX = currentX;
-      lastY = currentY;
-
-      song.style.left = currentX - offsetX + "px";
-      song.style.top = currentY - offsetY + "px";
-    });
-
-    document.addEventListener("mouseup", () => {
+    const endDrag = () => {
       if (!isDragging) return;
       isDragging = false;
       animationFrame = requestAnimationFrame(move);
       song.style.zIndex = "";
-    });
-  });
-    
+    };
+
+    // Mouse events
+    song.addEventListener("mousedown", (e) => startDrag(e.clientX, e.clientY));
+    document.addEventListener("mousemove", (e) => duringDrag(e.clientX, e.clientY));
+    document.addEventListener("mouseup", endDrag);
+
+    // Touch events
     song.addEventListener("touchstart", e => {
       const touch = e.touches[0];
       startDrag(touch.clientX, touch.clientY);
