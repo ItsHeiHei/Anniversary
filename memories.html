@@ -27,17 +27,17 @@
   font-family: 'Nanum Pen Script', cursive;
 }
 
-    .carousel {
+.carousel {
   display: flex;
-  height: calc(100vh - 120px); /* Adjust for title and button */
-  overflow-x: scroll;
+  overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-  scroll-padding: 0 16px;
-  gap: 0;
+  width: 100vw;
+  height: 100vh;
+  scroll-behavior: smooth;
+  margin: 0;
+  padding: 0;
 }
-
 
     .carousel::-webkit-scrollbar {
       display: none;
@@ -54,43 +54,45 @@
      overflow: hidden;
     }
     
-    .polaroid {
-  flex: 0 0 100vw; /* Each takes full screen width */
+.polaroid {
+  flex: 0 0 100%;
+  width: 100vw;
+  height: 100vh;
+  scroll-snap-align: start;
   display: flex;
   justify-content: center;
   align-items: center;
-  scroll-snap-align: center;
   box-sizing: border-box;
 }
 
 .polaroid-inner {
-  width: 70vw;
-  max-width: 450px;
-  height: 70vh;
   background: white;
+  width: 80vw;
+  max-width: 500px;
+  max-height: 80vh;
   padding: 16px;
   border-radius: 12px;
-  box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 }
 
-.polaroid img {
-  max-width: 100%;
-  max-height: 50vh;
+.polaroid-inner img {
+  width: 100%;
+  height: auto;
+  max-height: 60vh;
   object-fit: contain;
   border-radius: 8px;
 }
-    
-    .caption {
-      margin-top: 12px;
-      font-size: 30px;
-      color: #333;
-      text-align: center;
-      font-family: 'Nanum Pen Script', cursive;
-    }
+
+.caption {
+  margin-top: 12px;
+  font-size: 30px;
+  text-align: center;
+  color: #333;
+}
 
     .back-button {
       position: fixed;
