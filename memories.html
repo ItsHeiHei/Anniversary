@@ -45,39 +45,30 @@
      overflow: hidden;
     }
     
- .polaroid {
-  flex: 0 0 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  scroll-snap-align: start;
-  background: transparent;
-  box-sizing: border-box;
-}
-
-.polaroid-inner {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
-  padding: 16px 16px 28px;
-  width: 75vw;
-  max-width: 400px;
-  aspect-ratio: 3/4;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-.polaroid-inner img {
-  width: 100%;
-  height: auto;
-  max-height: 60vh;
-  object-fit: contain;
-  border-radius: 8px;
-}
+    .polaroid {
+      flex: 0 0 100vw;
+      height: 80vh;  
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      scroll-snap-align: start;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+      padding: 16px;
+      box-sizing: border-box;
+    }
+    
+    .polaroid img {
+      max-width: 90vw;
+      max-height: 65vh;
+      height: auto;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+      flex-grow: 1;
+    }
     
     .caption {
       margin-top: 12px;
@@ -111,52 +102,52 @@
 <body>
   <div class="carousel">
     <!-- Repeat this block for 20 photos -->
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem1.png" alt="Memory 1">
       <div class="caption">첫 여행의 설렘</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem2.png" alt="Memory 2">
       <div class="caption">너랑 걷던 그 길</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem3.png" alt="Memory 3">
       <div class="caption">카페에서의 하루</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem4.png" alt="Memory 4">
       <div class="caption">함께한 바닷가</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem5.png" alt="Memory 5">
       <div class="caption">크리스마스의 밤</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem6.png" alt="Memory 6">
       <div class="caption">웃음 가득한 순간</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem7.png" alt="Memory 7">
       <div class="caption">비 오는 날의 포옹</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem8.png" alt="Memory 8">
       <div class="caption">편지 속 감동</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem9.png" alt="Memory 9">
       <div class="caption">함께 만든 요리</div>
     </div>
 
-    <div class="polaroid-inner">
+    <div class="polaroid">
       <img src="mem10.png" alt="Memory 10">
       <div class="caption">아무 이유 없는 선물</div>
     </div>
